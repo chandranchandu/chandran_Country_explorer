@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>Country Details</title>
+<link rel="stylesheet"  href="css/csscountry.css">
+</head>
+<body>
+<div class="navbar">
+<div class="home"><a href="index.html">Home</a></div>
+  <div class="home"><a href="about.html">About</a></div>
+  <div><h1 id="countryfinder" >Country Explorer</h1></div> 
+  <div >
+  <form>
+<center>
+  <button  type="button" value="Go back!" onclick="history.back()" class="button">Go Back</button></center> <!-- goes to previous page -->
+</form></div>
+</div>
+<div class="main">
+<div class="countrydetails">                                                                          <!-- contains country details -->
+<h1 id="country"></h1>
+
+<h2 id="capital"></h2>
+<h2 id="population"></h2>
+<h2 id="region"></h2>
+<h2 id ="subregion"></h2>
+<h2 id ="cur"></h2>
+</div>
+<div id="img" class="countryflagdiv">                                                                 <!-- contains counttry flag-->
+</div>
+</div>
+
+<script>
+
+window.onload = function () {
+    var url = document.location.href,
+	  d = {}, tmp;
+        params = url.split('?')[1].split('&');
+    for (var i = 0, l = params.length; i < l; i++) {
+         tmp = params[i].split('=');                                       <!-- fetch the country name from url -->
+         d[tmp[0]] = tmp[1];
+    }
+	 
+var url = "https://restcountries.eu/rest/v2/name/"+d.cname+"?fullText=true";
+   fetch(url)
+  .then((resp) => resp.json()) 
+  .then(function(data) {
+                                                                          <!-- appending data to elements from json response -->
+	 document.getElementById("country").innerHTML=data[0].name;
+	 document.getElementById("capital").innerHTML="Capital :"+data[0].capital;
+    
+	document.getElementById("subregion").innerHTML="subregion :"+data[0].subregion
+		document.getElementById("region").innerHTML="region :"+data[0].region;
+
+    
+	document.getElementById("population").innerHTML="Population :"+data[0].population;
+    
+	document.getElementById("cur").innerHTML="currencies :"+data[0].currencies[0].name;
+    
+	document.getElementById("img").style.backgroundImage="url("+data[0].flag+")";;
+
+    })
+  .catch(function(error) {
+    console.log(error);
+  }); 
+}
+
+ 
+
+
+</script>
+</body>
+</html>
